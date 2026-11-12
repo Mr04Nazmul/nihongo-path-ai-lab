@@ -16,3 +16,6 @@ Chats are in this origin's localStorage. Do not enter sensitive information on a
 Open Model, verify size and no automatic weight download. Load chosen backend. Try: 〜ながら; 勉強; 〜てしまう; correction of 私は昨日学校に行きます; N3 〜ようにする; 学 readings; 昨日、図書館で本を読みました translation. Check Japanese and Bengali manually. Record tok/s and browser memory separately; JS heap is not total model/GPU memory. See REPORT.md for actual results and limitations.
 
 GitHub Actions builds and deploys to Pages after Pages is configured to use GitHub Actions. No other repository or production app is connected.
+
+## Experimental alternative
+Qwen3-0.6B ONNX q4 is available as an explicit third choice, pinned to 79346d370dfae34801d26993fda9ae2372900fd0. Download metadata total: 932,679,247 bytes. This is a smaller parameter model, not a smaller export. All teaching-quality claims depend on the actual test report. Qwen2.5 failed the first Bengali vocabulary test; Qwen3.5 WASM is blocked. Do not assume the primary WebGPU model passed inference merely because the architecture is registered.

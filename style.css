@@ -4,3 +4,5 @@
 #mobileNew{display:none}@media(max-width:760px){#mobileNew{display:inline-block}}
 
 #menu{display:none}@media(max-width:760px){#menu{display:inline-block;border:0;padding:5px}body.drawer aside{display:flex;position:fixed;inset:0 auto 0 0;z-index:9;box-shadow:0 0 0 100vw #0005}body.drawer #menu{position:relative;z-index:10}}
+
+.lab-notice{padding:10px 24px;background:var(--panel);font-size:10px;color:var(--muted);line-height:1.7}.lab-notice a{color:var(--accent)}
