@@ -28,3 +28,24 @@ Context counts actual tokenizer input plus output reserve. Only one generation c
 - Physical Android tests: none. Mobile viewport checks cannot establish Android hardware support.
 
 No prewritten assistant answers exist. Send remains disabled until real model load succeeds. Errors do not trigger an undisclosed model substitution.
+
+## Browser observations (shared desktop Chrome)
+- Public Pages URL loaded and rendered the complete interface; Send disabled before model readiness.
+- Primary metadata size shown: 570,493,329 bytes, including tokenizer/config and q4 graph/weights (runtime extra).
+- WebGPU API present, but requestAdapter returned no adapter. No WebGPU inference was executed.
+- Primary q4 weights downloaded to 550.8 MB. WASM session creation FAILED with: `Could not find an implementation for GatherBlockQuantized(1) ... /model/embed_tokens/Gather_Quant`.
+- This is a verified operator blocker in the selected ONNX Runtime WASM build. The updated UI blocks primary+WASM before downloading and asks users to explicitly choose a backend/model. Primary WebGPU remains an unverified candidate, not a supported-device claim.
+- Explicit fallback selected for further testing: Qwen2.5-0.5B-Instruct q4, revision 22942cb7d7ba4cc81bb4673549ca4d4614469b5e. Model/config/tokenizer total 797,647,451 bytes. This export is larger than the primary despite fewer parameters; it is not advertised as a smaller download.
+
+## Sources
+- https://huggingface.co/Qwen/Qwen3.5-0.8B
+- https://huggingface.co/onnx-community/Qwen3.5-0.8B-Text-ONNX
+- https://github.com/huggingface/transformers.js/releases/tag/4.3.2
+- https://huggingface.co/docs/transformers.js/main/en/guides/webgpu
+- https://webllm.mlc.ai/docs/user/basic_usage.html
+- https://github.com/ggml-org/llama.cpp
+
+## Actual Qwen2.5 WASM generation
+Model loaded successfully. Test prompt: “What does 勉強 mean? Give its hiragana and explain briefly in Bengali.” Output began `Bengali: さあ (Sāa) / Hiragana: さあ (Sāa) / English: 力争力 ...`. This is WRONG: 勉強 is べんきょう, meaning study. Bengali requirement failed. Observed 35 tokens at 63.2s (~0.6 tok/s), then 56 tokens at 98.2s; the initial cooperative Stop did not interrupt WASM promptly. Updated Stop now terminates the worker, retains partial output, and requires reload before continuing; this is an observed desktop WASM result, not an Android benchmark. Do not use this fallback as an authoritative tutor. More language tests have not passed. It does prove genuine local generation, not teaching quality.
+
+Qwen3 0.6B q4 is added as a separately named experimental fallback for investigation; its graph is 919,096,585 bytes, so fewer parameters does not mean a smaller download with this export. No substitution happens automatically.

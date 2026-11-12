@@ -1,0 +1,1 @@
+import fs from 'node:fs';const assets=fs.readdirSync('dist/assets').filter(x=>!x.endsWith('.wasm')&&!x.startsWith('worker-')).map(x=>'./assets/'+x);const p='dist/sw.js';fs.writeFileSync(p,fs.readFileSync(p,'utf8').replace('/*SHELL*/[]',JSON.stringify(['./','./index.html','./REPORT.md',...assets])));
